@@ -73,24 +73,25 @@ async def cmd_mending(self, user_mentions, leftover_args):
     query = raw_query.split(',')
     result = ''
     
-    if len(query) > 1
-        if raw_query[-1] == ','
+    if len(query) > 1:
+        if raw_query[-1] == ',':
             result = 'DASAR ANAK GOBLOK, UDAH DIKASIH TAHU CARANYA MASIH GA BISA!'
-        else
+        else:
             randomize = random.seed(hash(' '.join(leftover_args + standardize_user)))
             n = len(query)
-            if n > 3
+            if n > 3:
                 max_n = 3
-            else
+            else:
                 max_n = 1
-            choices = random.choices(query, k=max_n)
+            choices = []
+            for var in list(range(5)):
+                choices.append(random.choice(query))
             str_choices = ''.join(list(map(lambda x: ' Yang ini %s\n' % x, choices)))
             result = "Sejauh yang saya pantau yg paling bagus adalah\n" + str_choices
-    else
+    else:
         result = "KALO CUMA SATU NGAPAIN NANYA GUA GOBLOK!!"
     return Response(result, reply=True, tts=True)
-
-
+    
 async def cmd_apakah(self, user_mentions, leftover_args):
     """
     Usage:
