@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  musicbot:
+    container_name: music_bot
+    image: music-bot:latest
+    volumes:
+      - /opt/MusicBot:/usr/local/musicbot
+
