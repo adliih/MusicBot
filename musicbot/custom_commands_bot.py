@@ -79,19 +79,19 @@ async def cmd_mending(self, user_mentions, leftover_args):
         else:
             randomize = random.seed(hash(' '.join(leftover_args + standardize_user)))
             n = len(query)
-            if n > 3:
+            if n > 5:
                 max_n = 3
             else:
                 max_n = 1
-            choices = []
-            for var in list(range(5)):
-                choices.append(random.choice(query))
-            str_choices = ''.join(list(map(lambda x: ' Yang ini %s\n' % x, choices)))
+            choices = random.sample(query, max_n)
+            #for var in list(range(max_n)):
+            #    choices.append(random.choice(query))
+            str_choices = ''.join(list(map(lambda x: 'Ini %s\n' % x, choices)))
             result = "Sejauh yang saya pantau yg paling bagus adalah\n" + str_choices
     else:
         result = "KALO CUMA SATU NGAPAIN NANYA GUA GOBLOK!!"
     return Response(result, reply=True, tts=True)
-    
+
 async def cmd_apakah(self, user_mentions, leftover_args):
     """
     Usage:
@@ -100,7 +100,7 @@ async def cmd_apakah(self, user_mentions, leftover_args):
     Let kak seto tell his opinion about your question, better prophet than kerang ajaib
     This command will only answer with 'ya' or 'tidak'.
     """
-    standardize_user = [user.name for user in user_mentions]
+    standardize_user = [user.name for user in user_mentions]    
 
     randomize = random.seed(hash(' '.join(leftover_args + standardize_user)))
     seed = random.random()
