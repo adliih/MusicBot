@@ -2,8 +2,8 @@ version: '3'
 
 services:
   musicbot:
-    container_name: music_bot
-    image: music-bot:latest
+    container_name: music_bot_2
+    image: music-bot-2:latest
     volumes:
-      - /opt/MusicBot:/usr/local/musicbot
+      - /opt/MusicBot2:/usr/local/musicbot
 

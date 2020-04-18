@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM python:3.6-alpine
 
 # Add project source
 WORKDIR /usr/src/musicbot
@@ -12,6 +12,7 @@ RUN apk update \
   opus \
   python3 \
   libsodium-dev \
+  vim \
 \
 # Install build dependencies
 && apk add --no-cache --virtual .build-deps \
@@ -24,7 +25,7 @@ RUN apk update \
 \
 # Install pip dependencies
 && pip3 install --no-cache-dir -r requirements.txt \
-&& pip3 install --upgrade --force-reinstall --version websockets==4.0.1 \
+&& pip3 install --upgrade --force-reinstall --version websockets==6.0 \
 \
 # Clean up build dependencies
 && apk del .build-deps
