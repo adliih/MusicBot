@@ -84,8 +84,6 @@ async def cmd_mending(self, user_mentions, leftover_args):
             else:
                 max_n = 1
             choices = random.sample(query, max_n)
-            #for var in list(range(max_n)):
-            #    choices.append(random.choice(query))
             str_choices = ''.join(list(map(lambda x: 'Ini %s\n' % x, choices)))
             result = "Sejauh yang saya pantau yg paling bagus adalah\n" + str_choices
     else:
