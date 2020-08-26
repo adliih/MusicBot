@@ -34,12 +34,13 @@ def redownload_config():
     if 'GITHUB_TOKEN' in os.environ and 'GITHUB_CONFIG_REPO' in os.environ:
         g = Github(os.getenv('GITHUB_TOKEN'))
         config_repo = g.get_repo(os.getenv('GITHUB_CONFIG_REPO'))
-        for content in config_repo.get_contents('config'):
-            # Copying all files to in folder
-            log.info('copying ' + content.path)
-            with open(content.path, 'wb') as config_file:
-                print(content.decoded_content)
-                config_file.write(content.decoded_content)
+        for dir in ['config', 'data']:
+            for content in config_repo.get_contents(dir):
+                # Copying all files to in folder
+                log.info('copying ' + content.path)
+                with open(content.path, 'wb') as config_file:
+                    print(content.decoded_content)
+                    config_file.write(content.decoded_content)
 
 def sync_with_config_repo(path, content):
     import os
