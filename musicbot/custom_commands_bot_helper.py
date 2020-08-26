@@ -34,10 +34,31 @@ def redownload_config():
     if 'GITHUB_TOKEN' in os.environ and 'GITHUB_CONFIG_REPO' in os.environ:
         g = Github(os.getenv('GITHUB_TOKEN'))
         config_repo = g.get_repo(os.getenv('GITHUB_CONFIG_REPO'))
-        for content in config_repo.get_contents(''):
-            # Copying all except readme files to config folder
-            if content.path != 'README.md':
-                log.debug('copying ' + content.path)
-                with open('config/' + content.path, 'wb') as config_file:
-                    print(content.decoded_content)
-                    config_file.write(content.decoded_content)
+        for content in config_repo.get_contents('config'):
+            # Copying all files to in folder
+            log.debug('copying ' + content.path)
+            with open(content.path, 'wb') as config_file:
+                print(content.decoded_content)
+                config_file.write(content.decoded_content)
+
+async def sync_with_config_repo(path):
+    import os
+    from dotenv import load_dotenv, find_dotenv
+    allow_requests = True
+    from github import Github, UnknownObjectException
+
+    load_dotenv(find_dotenv())
+
+    if 'GITHUB_TOKEN' in os.environ and 'GITHUB_CONFIG_REPO' in os.environ:
+        log.debug('Will Sync With Config repo: ' + path)
+        g = Github(os.getenv('GITHUB_TOKEN'))
+        config_repo = g.get_repo(os.getenv('GITHUB_CONFIG_REPO'))
+        with open(path, 'rb') as path_file:
+            try:
+                # Try update
+                existing_content = config_repo.get_contents(path) # this will raise UnknownObjectException if not exist yet
+                config_repo.update_file(path, 'Auto Sync', path_file, existing_content.sha)
+                log.debug('Auto Sync done ' + path)
+            except UnknownObjectException:
+                config_repo.create_file(path, 'Auto Create', path_file)
+                log.debug('Auto Create done ' + path)

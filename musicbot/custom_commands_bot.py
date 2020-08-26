@@ -42,7 +42,7 @@ from .json import Json
 from .constants import VERSION as BOTVERSION
 from .constants import DISCORD_MSG_CHAR_LIMIT, AUDIO_CACHE_PATH
 
-from .custom_commands_bot_helper import load_custom_command
+from .custom_commands_bot_helper import load_custom_command, sync_with_config_repo
 
 load_opus_lib()
 
@@ -241,6 +241,7 @@ async def cmd_quote(self, leftover_args):
             if len(leftover_args) > 1:
                 quotes.append(' '.join(leftover_args[1::]))
                 write_file(quotes_file_path, quotes)
+                sync_with_config_repo(quotes_file_path)
                 return Response('Thanks. Your qoute has been added', True)
             else:
                 # Mising wise quote
@@ -299,6 +300,7 @@ async def cmd_show(self, leftover_args):
                 value = leftover_args[2]
                 shows[key] = value
                 write_pickle(shows_file_path, shows)
+                sync_with_config_repo(shows_file_path)
                 return Response('Thanks. Your show has been added', True)
             elif len(leftover_args < 3):
                 return Response('Please enter key and contents you want to save', True)
