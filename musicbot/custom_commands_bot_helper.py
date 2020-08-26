@@ -41,7 +41,7 @@ def redownload_config():
                 print(content.decoded_content)
                 config_file.write(content.decoded_content)
 
-async def sync_with_config_repo(path):
+async def sync_with_config_repo(path, content):
     import os
     from dotenv import load_dotenv, find_dotenv
     allow_requests = True
@@ -53,12 +53,11 @@ async def sync_with_config_repo(path):
         log.info('Will Sync With Config repo: ' + path)
         g = Github(os.getenv('GITHUB_TOKEN'))
         config_repo = g.get_repo(os.getenv('GITHUB_CONFIG_REPO'))
-        with open(path, 'rb') as path_file:
-            try:
-                # Try update
-                existing_content = config_repo.get_contents(path) # this will raise UnknownObjectException if not exist yet
-                config_repo.update_file(path, 'Auto Sync', path_file, existing_content.sha)
-                log.info('Auto Sync done ' + path)
-            except UnknownObjectException:
-                config_repo.create_file(path, 'Auto Create', path_file)
-                log.info('Auto Create done ' + path)
+        try:
+            # Try update
+            existing_content = config_repo.get_contents(path) # this will raise UnknownObjectException if not exist yet
+            config_repo.update_file(path, 'Auto Sync', content, existing_content.sha)
+            log.info('Auto Sync done ' + path)
+        except UnknownObjectException:
+            config_repo.create_file(path, 'Auto Create', content)
+            log.info('Auto Create done ' + path)

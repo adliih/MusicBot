@@ -241,7 +241,7 @@ async def cmd_quote(self, leftover_args):
             if len(leftover_args) > 1:
                 quotes.append(' '.join(leftover_args[1::]))
                 write_file(quotes_file_path, quotes)
-                sync_with_config_repo(quotes_file_path)
+                sync_with_config_repo(quotes_file_path, quotes)
                 return Response('Thanks. Your qoute has been added', True)
             else:
                 # Mising wise quote
@@ -300,7 +300,7 @@ async def cmd_show(self, leftover_args):
                 value = leftover_args[2]
                 shows[key] = value
                 write_pickle(shows_file_path, shows)
-                sync_with_config_repo(shows_file_path)
+                sync_with_config_repo(shows_file_path, shows)
                 return Response('Thanks. Your show has been added', True)
             elif len(leftover_args < 3):
                 return Response('Please enter key and contents you want to save', True)
