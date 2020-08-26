@@ -1,0 +1,9 @@
+pynacl==1.2.1
+discord.py[voice]
+pip
+youtube_dl
+colorlog
+cffi --only-binary all; sys_platform == 'win32'
+PyGithub==1.53
+python-dotenv==0.14.0
+websockets==8.1
