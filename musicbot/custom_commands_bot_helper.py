@@ -1,5 +1,4 @@
 import logging
-from .utils import load_file
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +41,7 @@ def redownload_config():
                 print(content.decoded_content)
                 config_file.write(content.decoded_content)
 
-def sync_with_config_repo(path, _content):
+def sync_with_config_repo(path, content):
     import os
     from dotenv import load_dotenv, find_dotenv
     allow_requests = True
@@ -54,7 +53,6 @@ def sync_with_config_repo(path, _content):
         log.info('Will Sync With Config repo: ' + path)
         g = Github(os.getenv('GITHUB_TOKEN'))
         config_repo = g.get_repo(os.getenv('GITHUB_CONFIG_REPO'))
-        content = load_file(path)
         try:
             # Try update
             existing_content = config_repo.get_contents(path) # this will raise UnknownObjectException if not exist yet
