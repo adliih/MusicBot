@@ -51,6 +51,7 @@ log = logging.getLogger(__name__)
 # Extra import that needed in custom command
 from subprocess import check_output
 from .utils import write_pickle, load_pickle
+import pickle
 
 # List of custom command
 # Should be in a form of method with a start of 'cmd_' + {Command Name}
@@ -241,7 +242,7 @@ async def cmd_quote(self, leftover_args):
             if len(leftover_args) > 1:
                 quotes.append(' '.join(leftover_args[1::]))
                 write_file(quotes_file_path, quotes)
-                sync_with_config_repo(quotes_file_path, quotes)
+                sync_with_config_repo(quotes_file_path, '\n'.join(quotes))
                 return Response('Thanks. Your qoute has been added', True)
             else:
                 # Mising wise quote
@@ -300,7 +301,7 @@ async def cmd_show(self, leftover_args):
                 value = leftover_args[2]
                 shows[key] = value
                 write_pickle(shows_file_path, shows)
-                sync_with_config_repo(shows_file_path, shows)
+                sync_with_config_repo(shows_file_path, pickle.dumps(shows))
                 return Response('Thanks. Your show has been added', True)
             elif len(leftover_args < 3):
                 return Response('Please enter key and contents you want to save', True)
