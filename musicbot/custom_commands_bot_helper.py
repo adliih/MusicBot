@@ -41,7 +41,7 @@ def redownload_config():
                 print(content.decoded_content)
                 config_file.write(content.decoded_content)
 
-async def sync_with_config_repo(path, content):
+def sync_with_config_repo(path, content):
     import os
     from dotenv import load_dotenv, find_dotenv
     allow_requests = True
