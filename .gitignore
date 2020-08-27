@@ -18,3 +18,4 @@ config/whitelist.txt
 config/blacklist.txt
 
 .env
+.venv
