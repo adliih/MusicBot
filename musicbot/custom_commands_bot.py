@@ -215,6 +215,7 @@ async def cmd_quote(self, leftover_args):
         {command_prefix}quote list => List of all available quotes
         {command_prefix}quote add <Your wise quotes> => Add the quotes
         {command_prefix}quote del <n> => Delete n-th quotes from the list
+        {command_prefix}show save => Save the current storage to github
     """
     # Load quotes if this is the first time exec quote
 
@@ -242,7 +243,6 @@ async def cmd_quote(self, leftover_args):
             if len(leftover_args) > 1:
                 quotes.append(' '.join(leftover_args[1::]))
                 write_file(quotes_file_path, quotes)
-                sync_with_config_repo(quotes_file_path, '\n'.join(quotes))
                 return Response('Thanks. Your qoute has been added', True)
             else:
                 # Mising wise quote
@@ -261,6 +261,9 @@ async def cmd_quote(self, leftover_args):
             else:
                 # Missing index that need to be deleted
                 return Response('Please enter an index', True, tts=True)
+        elif leftover_args[0] == 'save':
+            sync_with_config_repo(quotes_file_path, '\n'.join(quotes))
+            return Response('Got it. Quotes saved to github', True)
     elif len(quotes) > 0:
         # Return random quote
         selected_quote = quotes[random.randint(0, len(quotes)-1)]
@@ -276,6 +279,7 @@ async def cmd_show(self, leftover_args):
         {command_prefix}show list => List of all available keys
         {command_prefix}show add <key> <content> => Add content with corresponding key
         {command_prefix}show del <key> => Delete content with corresponding key
+        {command_prefix}show save => Save the current storage to github
     """
     shows_file_path = 'data/shows.pkl';
     global shows
@@ -301,7 +305,6 @@ async def cmd_show(self, leftover_args):
                 value = leftover_args[2]
                 shows[key] = value
                 write_pickle(shows_file_path, shows)
-                sync_with_config_repo(shows_file_path, pickle.dumps(shows))
                 return Response('Thanks. Your show has been added', True)
             elif len(leftover_args < 3):
                 return Response('Please enter key and contents you want to save', True)
@@ -320,6 +323,9 @@ async def cmd_show(self, leftover_args):
                     return Response(result, True) 
             else:
                 return Response('Please enter the key you want to delete', True)
+        elif leftover_args[0] == 'save':
+            sync_with_config_repo(shows_file_path, pickle.dumps(shows))
+            return Response('Got it. Saved to github', True)
         else:
             if len(shows) == 0:
                 return Response('Nothing to show', True)
