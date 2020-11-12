@@ -2718,7 +2718,9 @@ class MusicBot(discord.Client):
                 handler_kwargs['permissions'] = user_permissions
 
             if params.pop('user_mentions', None):
-                handler_kwargs['user_mentions'] = list(message.mentions)
+                user_mentions = list(message.mentions)
+                user_mentions.extend(list(message.role_mentions))
+                handler_kwargs['user_mentions'] = user_mentions
 
             if params.pop('channel_mentions', None):
                 handler_kwargs['channel_mentions'] = list(map(message.guild.get_channel, message.raw_channel_mentions))
