@@ -4,7 +4,5 @@ setup:
 build:
   docker:
     worker: Dockerfile
-    web: web/Dockerfile
 run:
   worker: python run.py
-  web: python web/server.py
